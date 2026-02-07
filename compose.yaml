@@ -1,0 +1,49 @@
+name: readmeabook
+
+x-daemonless:
+  title: "ReadMeABook"
+  icon: ":material-book-music:"
+  category: "Media Management"
+  description: "Audiobook request and management platform with AI recommendations."
+  upstream_url: "https://github.com/kikootwo/readmeabook"
+  web_url: "https://github.com/kikootwo/readmeabook"
+  user: "bsd"
+  mlock: false
+  upstream_binary: false
+
+  docs:
+    env:
+      PUID: "User ID for the application process"
+      PGID: "Group ID for the application process"
+      TZ: "Timezone for the container"
+      PUBLIC_URL: "Public URL for OAuth callbacks (required for Plex/OIDC auth)"
+      LOG_LEVEL: "Logging level (default: info)"
+    volumes:
+      /app/config: "Application configuration and secrets"
+      /app/cache: "Thumbnail and metadata cache"
+      /downloads: "Download client path"
+      /media: "Audiobook library"
+      /var/lib/postgresql/data: "PostgreSQL database storage"
+      /var/lib/redis: "Redis data persistence"
+    ports:
+      3030: "Web UI"
+
+services:
+  readmeabook:
+    image: ghcr.io/daemonless/readmeabook:latest
+    annotations:
+      org.freebsd.jail.allow.sysvipc: "true"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - LOG_LEVEL=info
+    volumes:
+      - /path/to/containers/readmeabook/config:/app/config
+      - /path/to/containers/readmeabook/cache:/app/cache
+      - /path/to/containers/readmeabook/postgres:/var/lib/postgresql/data
+      - /path/to/containers/readmeabook/redis:/var/lib/redis
+      - /path/to/downloads:/downloads
+      - /path/to/media:/media
+    ports:
+      - "3030:3030"

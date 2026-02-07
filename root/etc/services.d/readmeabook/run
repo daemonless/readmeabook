@@ -1,0 +1,45 @@
+#!/bin/sh
+exec 2>&1
+
+# Wait for PostgreSQL
+echo "Waiting for PostgreSQL..."
+while ! /usr/local/bin/pg_isready -h 127.0.0.1 -p 5432 >/dev/null 2>&1; do
+  sleep 1
+done
+echo "PostgreSQL is ready"
+
+# Wait for Redis
+echo "Waiting for Redis..."
+while ! /usr/local/bin/redis-cli -h 127.0.0.1 -p 6379 ping >/dev/null 2>&1; do
+  sleep 1
+done
+echo "Redis is ready"
+
+# Load environment
+. /etc/s6-env/readmeabook
+
+export HOME=/app/config
+export NODE_ENV=production
+export PORT=3030
+export HOSTNAME=0.0.0.0
+
+cd /app
+
+# Start server in background
+s6-setuidgid bsd /usr/local/bin/node server.js &
+SERVER_PID=$!
+
+# Wait for server to be ready, then call /api/init to start scheduler/jobs
+# (upstream image does this in app-start.sh)
+echo "Waiting for server to be ready..."
+for i in $(seq 1 30); do
+  if fetch -qo /dev/null http://localhost:3030/api/health 2>/dev/null; then
+    echo "Server is ready, initializing application services..."
+    fetch -qo - http://localhost:3030/api/init || echo "Warning: /api/init failed (may already be initialized)"
+    break
+  fi
+  sleep 2
+done
+
+# Wait for server process
+wait $SERVER_PID

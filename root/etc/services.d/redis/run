@@ -1,0 +1,8 @@
+#!/bin/sh
+exec 2>&1
+echo "Starting Redis..."
+exec s6-setuidgid bsd /usr/local/bin/redis-server \
+  --appendonly yes \
+  --dir /var/lib/redis \
+  --bind 127.0.0.1 \
+  --port 6379

@@ -1,0 +1,129 @@
+#!/bin/sh
+# ReadMeABook initialization script
+# - Creates directories
+# - Initializes PostgreSQL if needed
+# - Generates/loads secrets
+# - Runs Prisma schema migrations
+# - Writes s6 environment
+
+set -e
+
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
+
+POSTGRES_USER="${POSTGRES_USER:-readmeabook}"
+POSTGRES_DB="${POSTGRES_DB:-readmeabook}"
+POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-}"
+SECRETS_FILE="/app/config/.secrets"
+
+echo "[readmeabook] Initializing with PUID=$PUID PGID=$PGID"
+
+# ── Create directories ───────────────────────────────────────────────
+mkdir -p /app/config /app/cache /downloads /media \
+         /var/lib/postgresql/data /var/lib/redis \
+         /var/run/postgresql /etc/s6-env
+
+# ── Load existing secrets ────────────────────────────────────────────
+if [ -f "$SECRETS_FILE" ]; then
+    echo "[readmeabook] Loading existing secrets from $SECRETS_FILE"
+    . "$SECRETS_FILE"
+fi
+
+# ── Generate missing secrets ─────────────────────────────────────────
+if [ -z "$POSTGRES_PASSWORD" ]; then
+    POSTGRES_PASSWORD=$(openssl rand -base64 32 | tr -d '/+=' | head -c 32)
+    echo "[readmeabook] Generated POSTGRES_PASSWORD"
+fi
+
+if [ -z "$JWT_SECRET" ]; then
+    JWT_SECRET=$(openssl rand -base64 32)
+    echo "[readmeabook] Generated JWT_SECRET"
+fi
+
+if [ -z "$JWT_REFRESH_SECRET" ]; then
+    JWT_REFRESH_SECRET=$(openssl rand -base64 32)
+    echo "[readmeabook] Generated JWT_REFRESH_SECRET"
+fi
+
+if [ -z "$CONFIG_ENCRYPTION_KEY" ]; then
+    CONFIG_ENCRYPTION_KEY=$(openssl rand -base64 32)
+    echo "[readmeabook] Generated CONFIG_ENCRYPTION_KEY"
+fi
+
+# ── Persist secrets ──────────────────────────────────────────────────
+cat > "$SECRETS_FILE" <<EOF
+POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+JWT_SECRET="$JWT_SECRET"
+JWT_REFRESH_SECRET="$JWT_REFRESH_SECRET"
+CONFIG_ENCRYPTION_KEY="$CONFIG_ENCRYPTION_KEY"
+EOF
+chmod 600 "$SECRETS_FILE"
+
+# ── Initialize PostgreSQL ────────────────────────────────────────────
+if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+    echo "[readmeabook] Initializing PostgreSQL database..."
+    chown -R bsd:bsd /var/lib/postgresql /var/run/postgresql
+    su -m bsd -c '/usr/local/bin/initdb -D /var/lib/postgresql/data --encoding=UTF8 --locale=C'
+
+    # Configure pg_hba.conf for local trust auth
+    cat > /var/lib/postgresql/data/pg_hba.conf <<PGHBA
+local   all   all                 trust
+host    all   all   127.0.0.1/32  trust
+host    all   all   ::1/128       trust
+PGHBA
+
+    # Start temporary PostgreSQL to create user and database
+    su -m bsd -c '/usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start'
+
+    echo "[readmeabook] Creating database user and database..."
+    su -m bsd -c "/usr/local/bin/psql -h 127.0.0.1 postgres -c \"CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';\""
+    su -m bsd -c "/usr/local/bin/psql -h 127.0.0.1 postgres -c \"CREATE DATABASE $POSTGRES_DB OWNER $POSTGRES_USER;\""
+
+    su -m bsd -c '/usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop'
+    echo "[readmeabook] PostgreSQL initialized"
+else
+    echo "[readmeabook] PostgreSQL data directory exists, skipping init"
+fi
+
+# ── Set ownership ────────────────────────────────────────────────────
+chown -R bsd:bsd /app/config /app/cache /downloads /media \
+                 /var/lib/postgresql /var/run/postgresql \
+                 /var/lib/redis
+
+# ── Run Prisma schema migrations ────────────────────────────────────
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@127.0.0.1:5432/${POSTGRES_DB}?schema=public"
+export DATABASE_URL
+
+echo "[readmeabook] Running Prisma schema push..."
+# Start PostgreSQL temporarily for migration
+su -m bsd -c '/usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start'
+
+cd /app
+su -m bsd -c "DATABASE_URL='$DATABASE_URL' \
+    PRISMA_SCHEMA_ENGINE_BINARY=/app/schema-engine \
+    PRISMA_QUERY_ENGINE_LIBRARY=/app/node_modules/.prisma/client/libquery_engine-freebsd15.so.node \
+    PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 \
+    /usr/local/bin/node /app/node_modules/prisma/build/index.js db push --skip-generate --accept-data-loss" || \
+    echo "[readmeabook] WARNING: prisma db push failed - schema may need manual migration"
+
+su -m bsd -c '/usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop'
+
+# ── Write s6 environment ────────────────────────────────────────────
+REDIS_URL="redis://127.0.0.1:6379"
+
+cat > /etc/s6-env/readmeabook <<EOF
+export DATABASE_URL="$DATABASE_URL"
+export REDIS_URL="$REDIS_URL"
+export JWT_SECRET="$JWT_SECRET"
+export JWT_REFRESH_SECRET="$JWT_REFRESH_SECRET"
+export CONFIG_ENCRYPTION_KEY="$CONFIG_ENCRYPTION_KEY"
+export POSTGRES_USER="$POSTGRES_USER"
+export POSTGRES_DB="$POSTGRES_DB"
+export POSTGRES_PASSWORD="$POSTGRES_PASSWORD"
+export PRISMA_QUERY_ENGINE_LIBRARY="/app/node_modules/.prisma/client/libquery_engine-freebsd15.so.node"
+export PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+export LOG_LEVEL="${LOG_LEVEL:-info}"
+export PUBLIC_URL="${PUBLIC_URL:-}"
+EOF
+
+echo "[readmeabook] Initialization complete"
