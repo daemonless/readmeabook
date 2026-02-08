@@ -1,4 +1,7 @@
 icon: ':material-book-music:'
 cit:
-  mode: port
+  mode: screenshot
   port: 3030
+  wait: 120
+  annotations:
+    - org.freebsd.jail.allow.sysvipc=true
