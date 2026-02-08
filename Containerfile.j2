@@ -4,7 +4,6 @@ ARG UPSTREAM_URL="https://api.github.com/repos/kikootwo/readmeabook/releases/lat
 FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
 
 ARG UPSTREAM_URL
-ARG GITHUB_TOKEN=""
 
 # Build dependencies (C compiler + python for bcrypt, Rust libs for Prisma engines)
 RUN pkg update && pkg install -y \
@@ -26,7 +25,9 @@ RUN ln -sf /usr/bin/clang++ /usr/bin/c++ && \
 
 # Clone source (resolve latest version from upstream)
 WORKDIR /build
-RUN FETCH_URL="${UPSTREAM_URL}"; \
+RUN --mount=type=secret,id=github_token \
+    FETCH_URL="${UPSTREAM_URL}"; \
+    GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo ""); \
     if [ -n "${GITHUB_TOKEN}" ]; then \
       FETCH_URL=$(echo "${UPSTREAM_URL}" | sed "s|https://|https://x-access-token:${GITHUB_TOKEN}@|"); \
     fi && \
