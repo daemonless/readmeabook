@@ -1,12 +1,12 @@
 {
   "image": "readmeabook",
-  "generated": "2026-02-13T10:02:14Z",
+  "generated": "2026-02-14T10:34:58Z",
   "tags": {
     "latest": {
       "arch": "amd64",
       "app_version": "v1.0.8",
       "source": "upstream",
-      "generated": "2026-02-13T10:01:59Z",
+      "generated": "2026-02-14T10:34:40Z",
       "packages": {
         "freebsd": [
           {
