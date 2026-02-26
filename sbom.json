@@ -1,12 +1,12 @@
 {
   "image": "readmeabook",
-  "generated": "2026-02-25T19:57:38Z",
+  "generated": "2026-02-26T23:49:07Z",
   "tags": {
     "latest": {
       "arch": "amd64",
-      "app_version": "v1.0.12",
+      "app_version": "v1.0.14",
       "source": "upstream",
-      "generated": "2026-02-25T19:57:22Z",
+      "generated": "2026-02-26T23:48:52Z",
       "packages": {
         "freebsd": [
           {
@@ -2828,7 +2828,7 @@
           },
           {
             "name": "readmeabook",
-            "version": "1.0.12"
+            "version": "1.0.14"
           },
           {
             "name": "redent",
