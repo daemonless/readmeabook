@@ -1,12 +1,12 @@
 {
   "image": "readmeabook",
-  "generated": "2026-03-11T18:21:01Z",
+  "generated": "2026-03-13T21:04:34Z",
   "tags": {
     "latest": {
       "arch": "amd64",
-      "app_version": "v1.1.5",
+      "app_version": "v1.1.6",
       "source": "upstream",
-      "generated": "2026-03-11T18:20:46Z",
+      "generated": "2026-03-13T21:04:15Z",
       "packages": {
         "freebsd": [
           {
@@ -2875,7 +2875,7 @@
             "version": "6.19.0"
           },
           {
-            "name": "prisma-client-cfc3a96fe2d74f4cedb70860ffc6c27838591fda259043787adf34b75920b6c4",
+            "name": "prisma-client-0b0fba734e7d6f8e47c22bf6d26c14494556fb34df5d08297fc5cb22941ad5e4",
             "version": "6.19.0"
           },
           {
@@ -2952,7 +2952,7 @@
           },
           {
             "name": "readmeabook",
-            "version": "1.1.5"
+            "version": "1.1.6"
           },
           {
             "name": "redent",
