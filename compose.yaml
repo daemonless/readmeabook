@@ -10,6 +10,20 @@ x-daemonless:
   user: "bsd"
   mlock: false
   upstream_binary: false
+  appjail:
+    makejail:
+      options:
+        - "template: !ENV '${PWD}/readmeabook.conf'"
+  notes: |
+    ReadMeABook bundles PostgreSQL, which requires `allow.sysvipc` for shared memory. Create `readmeabook.conf` alongside `appjail-director.yml`:
+
+    ```
+    exec.start: "/bin/sh /etc/rc"
+    exec.stop: "/bin/sh /etc/rc.shutdown jail"
+    mount.devfs
+    persist
+    allow.sysvipc
+    ```
 
   docs:
     env:

@@ -5,15 +5,27 @@ Source: dbuild templates
 
 # ReadMeABook
 
+[![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/readmeabook/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/readmeabook/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/daemonless/readmeabook?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/readmeabook/commits)
+
 Audiobook request and management platform with AI recommendations.
 
 | | |
 |---|---|
 | **Port** | 3030 |
 | **Registry** | `ghcr.io/daemonless/readmeabook` |
-| **Docs** | [daemonless.io/images/readmeabook](https://daemonless.io/images/readmeabook/) |
 | **Source** | [https://github.com/kikootwo/readmeabook](https://github.com/kikootwo/readmeabook) |
 | **Website** | [https://github.com/kikootwo/readmeabook](https://github.com/kikootwo/readmeabook) |
+
+## Version Tags
+
+| Tag | Description | Best For |
+| :--- | :--- | :--- |
+| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
+
+## Prerequisites
+
+Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
 
 ## Deployment
 
@@ -30,15 +42,80 @@ services:
       - TZ=UTC
       - LOG_LEVEL=info
     volumes:
-      - /path/to/containers/readmeabook/app/config:/app/config
-      - /path/to/containers/readmeabook/app/cache:/app/cache
-      - /path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data
-      - /path/to/containers/readmeabook/var/lib/redis:/var/lib/redis
-      - /path/to/downloads:/downloads
-      - /path/to/media:/media
+      - "/path/to/containers/readmeabook/app/config:/app/config"
+      - "/path/to/containers/readmeabook/app/cache:/app/cache"
+      - "/path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data"
+      - "/path/to/containers/readmeabook/var/lib/redis:/var/lib/redis"
+      - "/path/to/downloads:/downloads"
+      - "/path/to/media:/media"
     ports:
       - 3030:3030
+    annotations:
+      org.freebsd.jail.allow.sysvipc: "true"
     restart: unless-stopped
+```
+
+### AppJail Director
+
+**.env**:
+
+```
+DIRECTOR_PROJECT=readmeabook
+PUID=1000
+PGID=1000
+TZ=UTC
+LOG_LEVEL=info
+```
+
+**appjail-director.yml**:
+
+```yaml
+options:
+  - virtualnet: ':<random> default'
+  - nat:
+services:
+  readmeabook:
+    name: readmeabook
+    options:
+      - container: 'boot args:--pull'
+      - template: !ENV '${PWD}/readmeabook.conf'
+    oci:
+      user: root
+      environment:
+        - PUID: !ENV '${PUID}'
+        - PGID: !ENV '${PGID}'
+        - TZ: !ENV '${TZ}'
+        - LOG_LEVEL: !ENV '${LOG_LEVEL}'
+    volumes:
+      - readmeabook_app_config: /app/config
+      - readmeabook_app_cache: /app/cache
+      - readmeabook_var_lib_postgresql_data: /var/lib/postgresql/data
+      - readmeabook_var_lib_redis: /var/lib/redis
+      - downloads: /downloads
+      - media: /media
+volumes:
+  readmeabook_app_config:
+    device: '/path/to/containers/readmeabook/app/config'
+  readmeabook_app_cache:
+    device: '/path/to/containers/readmeabook/app/cache'
+  readmeabook_var_lib_postgresql_data:
+    device: '/path/to/containers/readmeabook/var/lib/postgresql/data'
+  readmeabook_var_lib_redis:
+    device: '/path/to/containers/readmeabook/var/lib/redis'
+  downloads:
+    device: 'downloads'
+  media:
+    device: 'media'
+```
+
+**Makejail**:
+
+```
+ARG tag=latest
+
+OPTION overwrite=force
+OPTION from=ghcr.io/daemonless/readmeabook:${tag}
+SET allow.sysvipc=1
 ```
 
 ### Podman CLI
@@ -47,9 +124,9 @@ services:
 podman run -d --name readmeabook \
   -p 3030:3030 \
   --annotation 'org.freebsd.jail.allow.sysvipc=true' \
-  -e PUID=@PUID@ \
-  -e PGID=@PGID@ \
-  -e TZ=@TZ@ \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=UTC \
   -e LOG_LEVEL=info \
   -v /path/to/containers/readmeabook/app/config:/app/config \
   -v /path/to/containers/readmeabook/app/cache:/app/cache \
@@ -59,7 +136,6 @@ podman run -d --name readmeabook \
   -v /path/to/media:/media \
   ghcr.io/daemonless/readmeabook:latest
 ```
-Access at: `http://localhost:3030`
 
 ### Ansible
 
@@ -71,9 +147,9 @@ Access at: `http://localhost:3030`
     state: started
     restart_policy: always
     env:
-      PUID: "@PUID@"
-      PGID: "@PGID@"
-      TZ: "@TZ@"
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "UTC"
       LOG_LEVEL: "info"
     ports:
       - "3030:3030"
@@ -84,9 +160,14 @@ Access at: `http://localhost:3030`
       - "/path/to/containers/readmeabook/var/lib/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
       - "/path/to/media:/media"
+    annotation:
+      org.freebsd.jail.allow.sysvipc: "true"
 ```
 
-## Configuration
+Access at: `http://localhost:3030`
+
+## Parameters
+
 ### Environment Variables
 
 | Variable | Default | Description |
@@ -95,6 +176,7 @@ Access at: `http://localhost:3030`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `LOG_LEVEL` | `info` | Logging level (default: info) |
+
 ### Volumes
 
 | Path | Description |
@@ -105,14 +187,28 @@ Access at: `http://localhost:3030`
 | `/var/lib/redis` | Redis data persistence |
 | `/downloads` | Download client path |
 | `/media` | Audiobook library |
+
 ### Ports
 
 | Port | Protocol | Description |
 |------|----------|-------------|
 | `3030` | TCP | Web UI |
 
-## Notes
+ReadMeABook bundles PostgreSQL, which requires `allow.sysvipc` for shared memory. Create `readmeabook.conf` alongside `appjail-director.yml`:
 
-- **Architectures:** amd64
-- **User:** `bsd` (UID/GID set via PUID/PGID)
-- **Base:** Built on `ghcr.io/daemonless/base` (FreeBSD)
+```
+exec.start: "/bin/sh /etc/rc"
+exec.stop: "/bin/sh /etc/rc.shutdown jail"
+mount.devfs
+persist
+allow.sysvipc
+```
+
+
+**Architectures:** amd64
+**User:** `bsd` (UID/GID via PUID/PGID, defaults to 1000:1000)
+**Base:** FreeBSD 15.0
+
+---
+
+Need help? Join our [Discord](https://discord.gg/Kb9tkhecZT) community.
