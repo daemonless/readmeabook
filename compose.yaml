@@ -10,7 +10,7 @@ x-daemonless:
   user: "bsd"
   mlock: false
   upstream_binary: false
-  appjail:
+  appjail: true
     makejail:
       options:
         - "template: !ENV '${PWD}/readmeabook.conf'"
