@@ -1,11 +1,11 @@
 {
-  "generated": "2026-04-21T08:51:10Z",
+  "generated": "2026-05-03T21:01:08Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.1.8",
       "arch": "amd64",
-      "generated": "2026-04-21T08:49:51Z",
+      "generated": "2026-05-03T20:59:47Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -87,11 +87,11 @@
           },
           {
             "name": "FreeBSD-openssl",
-            "version": "15.0"
+            "version": "15.0p2"
           },
           {
             "name": "FreeBSD-openssl-lib",
-            "version": "15.0"
+            "version": "15.0p2"
           },
           {
             "name": "FreeBSD-pkg-bootstrap",
@@ -103,7 +103,7 @@
           },
           {
             "name": "FreeBSD-runtime",
-            "version": "15.0"
+            "version": "15.0p6"
           },
           {
             "name": "FreeBSD-tcpd",
@@ -279,7 +279,7 @@
           },
           {
             "name": "lcms2",
-            "version": "2.18"
+            "version": "2.19"
           },
           {
             "name": "lerc",
@@ -387,7 +387,7 @@
           },
           {
             "name": "libnghttp2",
-            "version": "1.68.0"
+            "version": "1.68.1"
           },
           {
             "name": "libnghttp3",
@@ -395,7 +395,7 @@
           },
           {
             "name": "libngtcp2",
-            "version": "1.21.0"
+            "version": "1.22.1"
           },
           {
             "name": "libogg",
