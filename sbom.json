@@ -1,11 +1,11 @@
 {
-  "generated": "2026-05-03T21:01:08Z",
+  "generated": "2026-05-07T13:35:18Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.1.8",
       "arch": "amd64",
-      "generated": "2026-05-03T20:59:47Z",
+      "generated": "2026-05-07T13:34:01Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -103,7 +103,7 @@
           },
           {
             "name": "FreeBSD-runtime",
-            "version": "15.0p6"
+            "version": "15.0p8"
           },
           {
             "name": "FreeBSD-tcpd",
@@ -131,7 +131,7 @@
           },
           {
             "name": "FreeBSD-zoneinfo",
-            "version": "15.0"
+            "version": "15.0p7"
           },
           {
             "name": "Imath",
@@ -227,7 +227,7 @@
           },
           {
             "name": "gnutls",
-            "version": "3.8.12"
+            "version": "3.8.13"
           },
           {
             "name": "googletest",
