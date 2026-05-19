@@ -1,11 +1,11 @@
 {
-  "generated": "2026-05-15T21:26:37Z",
+  "generated": "2026-05-19T20:35:31Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.0",
+      "app_version": "v1.2.1",
       "arch": "amd64",
-      "generated": "2026-05-15T21:25:21Z",
+      "generated": "2026-05-19T20:34:12Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -163,7 +163,7 @@
           },
           {
             "name": "ca_root_nss",
-            "version": "3.117_2"
+            "version": "3.123.1"
           },
           {
             "name": "cairo",
@@ -183,7 +183,7 @@
           },
           {
             "name": "expat",
-            "version": "2.8.0"
+            "version": "2.8.1"
           },
           {
             "name": "ffmpeg",
@@ -2902,7 +2902,7 @@
             "version": "6.19.0"
           },
           {
-            "name": "prisma-client-35bd3acefe4fca2795e211a89c6933b3dd4910bfde7e4d432aece32b1690b529",
+            "name": "prisma-client-6739ad80f9fdc7f8281a6510b1203963060d3dc2aa71e5efcd07d7a3396e6883",
             "version": "6.19.0"
           },
           {
@@ -2979,7 +2979,7 @@
           },
           {
             "name": "readmeabook",
-            "version": "1.2.0"
+            "version": "1.2.1"
           },
           {
             "name": "redent",
