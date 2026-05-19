@@ -68,6 +68,8 @@ RUN PRISMA_SCHEMA_ENGINE_BINARY=/tmp/schema-engine \
 # Build Next.js application (standalone output)
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+# Patch next.config.ts to ignore upstream TypeScript type errors (v1.2.x route handler types)
+RUN node -e "const fs=require('fs'); const c=fs.readFileSync('next.config.ts','utf8'); fs.writeFileSync('next.config.ts', c.replace('output: \'standalone\'', 'typescript: { ignoreBuildErrors: true }, output: \'standalone\''));"
 # Turbopack requires native @next/swc (no FreeBSD binary), WASM fallback doesn't support it
 RUN npx next build --webpack
 

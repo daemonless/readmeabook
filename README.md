@@ -7,9 +7,9 @@ Source: dbuild templates
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/readmeabook/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/readmeabook/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/readmeabook?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/readmeabook/commits)
+[![sysvipc Required](https://img.shields.io/badge/sysvipc-required-orange?style=flat-square&logo=freebsd&logoColor=white)](https://daemonless.io/guides/ocijail-patch/)
 
 Audiobook request and management platform with AI recommendations.
-
 
 | | |
 |---|---|
@@ -164,8 +164,6 @@ podman run -d --name readmeabook \
     annotation:
       org.freebsd.jail.allow.sysvipc: "true"
 ```
-
-Access at: `http://localhost:3030`
 
 ## Parameters
 
