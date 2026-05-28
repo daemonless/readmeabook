@@ -1,11 +1,11 @@
 {
-  "generated": "2026-05-28T08:52:35Z",
+  "generated": "2026-05-28T23:13:55Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.2.1",
       "arch": "amd64",
-      "generated": "2026-05-28T08:51:18Z",
+      "generated": "2026-05-28T23:12:40Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
