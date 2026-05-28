@@ -32,16 +32,17 @@ RUN ln -sf /usr/bin/clang++ /usr/bin/c++ && \
 # Clone source (resolve latest version from upstream)
 WORKDIR /build
 RUN --mount=type=secret,id=github_token \
-    FETCH_URL="${UPSTREAM_URL}"; \
-    GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo ""); \
+    GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo "") && \
     if [ -n "${GITHUB_TOKEN}" ]; then \
-      FETCH_URL=$(echo "${UPSTREAM_URL}" | sed "s|https://|https://x-access-token:${GITHUB_TOKEN}@|"); \
+      printf 'machine api.github.com login x-access-token password %s\n' "${GITHUB_TOKEN}" > /root/.netrc && \
+      chmod 600 /root/.netrc; \
     fi && \
-    VERSION=$(fetch -qo - "${FETCH_URL}" | jq -r '.tag_name') && \
+    VERSION=$(fetch -qo - "${UPSTREAM_URL}" | jq -r '.tag_name') && \
     echo "Resolved VERSION=$VERSION" && \
     git clone --depth 1 --branch ${VERSION} \
       https://github.com/kikootwo/readmeabook.git . && \
-    echo "${VERSION}" > /tmp/app_version
+    echo "${VERSION}" > /tmp/app_version && \
+    rm -f /root/.netrc
 
 # Install dependencies (includes bcrypt native build via node-gyp)
 RUN PYTHON=/usr/local/bin/python3.11 npm ci
