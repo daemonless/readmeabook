@@ -1,11 +1,11 @@
 {
-  "generated": "2026-05-28T23:13:55Z",
+  "generated": "2026-06-07T22:38:07Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.2.1",
       "arch": "amd64",
-      "generated": "2026-05-28T23:12:40Z",
+      "generated": "2026-06-07T22:36:46Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -535,7 +535,7 @@
           },
           {
             "name": "openexr",
-            "version": "3.4.11"
+            "version": "3.4.12"
           },
           {
             "name": "openjph",
