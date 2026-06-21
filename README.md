@@ -79,6 +79,7 @@ services:
     name: readmeabook
     options:
       - container: 'boot args:--pull'
+      - expose="3030:3030 proto:tcp" \
       - template: !ENV '${PWD}/readmeabook.conf'
     oci:
       user: root
@@ -118,6 +119,7 @@ OPTION overwrite=force
 OPTION from=ghcr.io/daemonless/readmeabook:${tag}
 SET allow.sysvipc=1
 ```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Podman CLI
 
@@ -137,6 +139,29 @@ podman run -d --name readmeabook \
   -v /path/to/media:/media \
   ghcr.io/daemonless/readmeabook:latest
 ```
+
+### AppJail
+
+```bash
+appjail oci run -Pd \
+  -o overwrite=force \
+  -o container="args:--pull" \
+  -o virtualnet=":<random> default" \
+  -o nat \
+  -o expose="3030:3030 proto:tcp" \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=UTC \
+  -e LOG_LEVEL=info \
+  -o fstab="/path/to/containers/readmeabook/app/config /app/config <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/app/cache /app/cache <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/var/lib/postgresql/data /var/lib/postgresql/data <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/var/lib/redis /var/lib/redis <pseudofs>" \
+  -o fstab="/path/to/downloads /downloads <pseudofs>" \
+  -o fstab="/path/to/media /media <pseudofs>" \
+  ghcr.io/daemonless/readmeabook:latest readmeabook
+```
+**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
 
 ### Ansible
 
