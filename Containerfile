@@ -4,7 +4,7 @@
 # Source: Containerfile.j2
 # --------------------------------------------------------------------------
 
-ARG BASE_VERSION=15
+ARG BASE_VERSION=15.1
 ARG UPSTREAM_URL="https://api.github.com/repos/kikootwo/readmeabook/releases/latest"
 
 FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder

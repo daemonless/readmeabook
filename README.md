@@ -35,13 +35,13 @@ Before deploying, ensure your host environment is ready. See the [Quick Start Gu
 ```yaml
 services:
   readmeabook:
-    image: ghcr.io/daemonless/readmeabook:latest
+    image: "ghcr.io/daemonless/readmeabook:latest"
     container_name: readmeabook
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
-      - LOG_LEVEL=info
+      - PUID=1000  # User ID for the application process
+      - PGID=1000  # Group ID for the application process
+      - TZ=UTC  # Timezone for the container
+      - LOG_LEVEL=info  # Logging level (default: info)
     volumes:
       - "/path/to/containers/readmeabook/app/config:/app/config"
       - "/path/to/containers/readmeabook/app/cache:/app/cache"
@@ -50,7 +50,7 @@ services:
       - "/path/to/downloads:/downloads"
       - "/path/to/media:/media"
     ports:
-      - 3030:3030
+      - "3030:3030"
     annotations:
       org.freebsd.jail.allow.sysvipc: "true"
     restart: unless-stopped
@@ -144,7 +144,7 @@ podman run -d --name readmeabook \
 - name: Deploy readmeabook
   containers.podman.podman_container:
     name: readmeabook
-    image: ghcr.io/daemonless/readmeabook:latest
+    image: "ghcr.io/daemonless/readmeabook:latest"
     state: started
     restart_policy: always
     env:
@@ -164,6 +164,8 @@ podman run -d --name readmeabook \
     annotation:
       org.freebsd.jail.allow.sysvipc: "true"
 ```
+
+Access at: `http://localhost:3030`
 
 ## Parameters
 
