@@ -19,7 +19,7 @@ RUN pkg update && pkg install -y \
     FreeBSD-clang FreeBSD-clang-dev FreeBSD-clibs-dev FreeBSD-openssl-dev \
     FreeBSD-toolchain \
     FreeBSD-libexecinfo-dev FreeBSD-utilities-dev FreeBSD-runtime-dev \
-    python311 \
+    python3 \
     && pkg clean -ay
 
 # Install Rust (needed to build Prisma query engine for FreeBSD)
@@ -45,7 +45,7 @@ RUN --mount=type=secret,id=github_token \
     rm -f /root/.netrc
 
 # Install dependencies (includes bcrypt native build via node-gyp)
-RUN PYTHON=/usr/local/bin/python3.11 npm ci
+RUN PYTHON=/usr/local/bin/python3 npm ci
 
 # Build Prisma query engine + schema engine for FreeBSD (no prebuilt binaries available)
 RUN . "$HOME/.cargo/env" && \

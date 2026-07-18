@@ -11,6 +11,9 @@ Source: dbuild templates
 
 Audiobook request and management platform with AI recommendations.
 
+> [!WARNING]
+> **Requires ocijail ≥ 0.6.0 (annotation support).** This image needs the jail permission **allow.sysvipc**, applied via OCI annotations. FreeBSD **quarterly ships ocijail 0.4.0, which has no annotation support** — the container starts but the permission is silently dropped, so the app can crash or misbehave at runtime. Point your pkg repos at the `latest` branch (ocijail ≥ 0.6.0), then run with the annotation flag below. See the [ocijail guide](https://daemonless.io/guides/ocijail-patch/).
+
 | | |
 |---|---|
 | **Port** | 3030 |
@@ -19,13 +22,11 @@ Audiobook request and management platform with AI recommendations.
 | **Website** | [https://github.com/kikootwo/readmeabook](https://github.com/kikootwo/readmeabook) |
 
 ## Version Tags
-
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
 | `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
 
 ## Prerequisites
-
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
 
 ## Deployment
@@ -42,6 +43,7 @@ services:
       - PGID=1000  # Group ID for the application process
       - TZ=UTC  # Timezone for the container
       - LOG_LEVEL=info  # Logging level (default: info)
+      - PUBLIC_URL=  # Public URL for OAuth callbacks (required for Plex/OIDC auth)
     volumes:
       - "/path/to/containers/readmeabook/app/config:/app/config"
       - "/path/to/containers/readmeabook/app/cache:/app/cache"
@@ -57,20 +59,24 @@ services:
 ```
 
 ### AppJail Director
-
 **.env**:
 
 ```
+# .env
+
 DIRECTOR_PROJECT=readmeabook
 PUID=1000
 PGID=1000
 TZ=UTC
 LOG_LEVEL=info
+PUBLIC_URL=
 ```
 
 **appjail-director.yml**:
 
 ```yaml
+# appjail-director.yml
+
 options:
   - virtualnet: ':<random> default'
   - nat:
@@ -79,7 +85,7 @@ services:
     name: readmeabook
     options:
       - container: 'boot args:--pull'
-      - expose="3030:3030 proto:tcp" \
+      - expose: '3030:3030 proto:tcp' \
       - template: !ENV '${PWD}/readmeabook.conf'
     oci:
       user: root
@@ -88,6 +94,7 @@ services:
         - PGID: !ENV '${PGID}'
         - TZ: !ENV '${TZ}'
         - LOG_LEVEL: !ENV '${LOG_LEVEL}'
+        - PUBLIC_URL: !ENV '${PUBLIC_URL}'
     volumes:
       - readmeabook_app_config: /app/config
       - readmeabook_app_cache: /app/cache
@@ -113,6 +120,8 @@ volumes:
 **Makejail**:
 
 ```
+# Makejail
+
 ARG tag=latest
 
 OPTION overwrite=force
@@ -131,6 +140,7 @@ podman run -d --name readmeabook \
   -e PGID=1000 \
   -e TZ=UTC \
   -e LOG_LEVEL=info \
+  -e PUBLIC_URL= \
   -v /path/to/containers/readmeabook/app/config:/app/config \
   -v /path/to/containers/readmeabook/app/cache:/app/cache \
   -v /path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data \
@@ -153,6 +163,7 @@ appjail oci run -Pd \
   -e PGID=1000 \
   -e TZ=UTC \
   -e LOG_LEVEL=info \
+  -e PUBLIC_URL= \
   -o fstab="/path/to/containers/readmeabook/app/config /app/config <pseudofs>" \
   -o fstab="/path/to/containers/readmeabook/app/cache /app/cache <pseudofs>" \
   -o fstab="/path/to/containers/readmeabook/var/lib/postgresql/data /var/lib/postgresql/data <pseudofs>" \
@@ -177,6 +188,7 @@ appjail oci run -Pd \
       PGID: "1000"
       TZ: "UTC"
       LOG_LEVEL: "info"
+      PUBLIC_URL: ""
     ports:
       - "3030:3030"
     volumes:
@@ -202,6 +214,7 @@ Access at: `http://localhost:3030`
 | `PGID` | `1000` | Group ID for the application process |
 | `TZ` | `UTC` | Timezone for the container |
 | `LOG_LEVEL` | `info` | Logging level (default: info) |
+| `PUBLIC_URL` | `` | Public URL for OAuth callbacks (required for Plex/OIDC auth) |
 
 ### Volumes
 
