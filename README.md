@@ -45,10 +45,10 @@ services:
       - LOG_LEVEL=info  # Logging level (default: info)
       - PUBLIC_URL=  # Public URL for OAuth callbacks (required for Plex/OIDC auth)
     volumes:
-      - "/path/to/containers/readmeabook/app/config:/app/config"
-      - "/path/to/containers/readmeabook/app/cache:/app/cache"
-      - "/path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data"
-      - "/path/to/containers/readmeabook/var/lib/redis:/var/lib/redis"
+      - "/path/to/containers/readmeabook/config:/app/config"
+      - "/path/to/containers/readmeabook/cache:/app/cache"
+      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
+      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
       - "/path/to/media:/media"
     ports:
@@ -85,7 +85,7 @@ services:
     name: readmeabook
     options:
       - container: 'boot args:--pull'
-      - expose: '3030:3030 proto:tcp' \
+      - expose: '3030:3030 proto:tcp'
       - template: !ENV '${PWD}/readmeabook.conf'
     oci:
       user: root
@@ -96,21 +96,21 @@ services:
         - LOG_LEVEL: !ENV '${LOG_LEVEL}'
         - PUBLIC_URL: !ENV '${PUBLIC_URL}'
     volumes:
-      - readmeabook_app_config: /app/config
-      - readmeabook_app_cache: /app/cache
-      - readmeabook_var_lib_postgresql_data: /var/lib/postgresql/data
-      - readmeabook_var_lib_redis: /var/lib/redis
+      - readmeabook_config: /app/config
+      - readmeabook_cache: /app/cache
+      - readmeabook_data: /var/lib/postgresql/data
+      - readmeabook_redis: /var/lib/redis
       - downloads: /downloads
       - media: /media
 volumes:
-  readmeabook_app_config:
-    device: '/path/to/containers/readmeabook/app/config'
-  readmeabook_app_cache:
-    device: '/path/to/containers/readmeabook/app/cache'
-  readmeabook_var_lib_postgresql_data:
-    device: '/path/to/containers/readmeabook/var/lib/postgresql/data'
-  readmeabook_var_lib_redis:
-    device: '/path/to/containers/readmeabook/var/lib/redis'
+  readmeabook_config:
+    device: '/path/to/containers/readmeabook/config'
+  readmeabook_cache:
+    device: '/path/to/containers/readmeabook/cache'
+  readmeabook_data:
+    device: '/path/to/containers/readmeabook/data'
+  readmeabook_redis:
+    device: '/path/to/containers/readmeabook/redis'
   downloads:
     device: 'downloads'
   media:
@@ -141,10 +141,10 @@ podman run -d --name readmeabook \
   -e TZ=UTC \
   -e LOG_LEVEL=info \
   -e PUBLIC_URL= \
-  -v /path/to/containers/readmeabook/app/config:/app/config \
-  -v /path/to/containers/readmeabook/app/cache:/app/cache \
-  -v /path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data \
-  -v /path/to/containers/readmeabook/var/lib/redis:/var/lib/redis \
+  -v /path/to/containers/readmeabook/config:/app/config \
+  -v /path/to/containers/readmeabook/cache:/app/cache \
+  -v /path/to/containers/readmeabook/data:/var/lib/postgresql/data \
+  -v /path/to/containers/readmeabook/redis:/var/lib/redis \
   -v /path/to/downloads:/downloads \
   -v /path/to/media:/media \
   ghcr.io/daemonless/readmeabook:latest
@@ -164,10 +164,10 @@ appjail oci run -Pd \
   -e TZ=UTC \
   -e LOG_LEVEL=info \
   -e PUBLIC_URL= \
-  -o fstab="/path/to/containers/readmeabook/app/config /app/config <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/app/cache /app/cache <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/var/lib/postgresql/data /var/lib/postgresql/data <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/var/lib/redis /var/lib/redis <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/config /app/config <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/cache /app/cache <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/data /var/lib/postgresql/data <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/redis /var/lib/redis <pseudofs>" \
   -o fstab="/path/to/downloads /downloads <pseudofs>" \
   -o fstab="/path/to/media /media <pseudofs>" \
   ghcr.io/daemonless/readmeabook:latest readmeabook
@@ -192,10 +192,10 @@ appjail oci run -Pd \
     ports:
       - "3030:3030"
     volumes:
-      - "/path/to/containers/readmeabook/app/config:/app/config"
-      - "/path/to/containers/readmeabook/app/cache:/app/cache"
-      - "/path/to/containers/readmeabook/var/lib/postgresql/data:/var/lib/postgresql/data"
-      - "/path/to/containers/readmeabook/var/lib/redis:/var/lib/redis"
+      - "/path/to/containers/readmeabook/config:/app/config"
+      - "/path/to/containers/readmeabook/cache:/app/cache"
+      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
+      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
       - "/path/to/media:/media"
     annotation:
