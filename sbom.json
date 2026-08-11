@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-09T14:00:26Z",
+  "generated": "2026-08-11T21:09:42Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.1",
+      "app_version": "v1.2.2",
       "arch": "amd64",
-      "generated": "2026-08-09T13:56:35Z",
+      "generated": "2026-08-11T21:07:08Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -4106,7 +4106,7 @@
           {
             "name": "readmeabook",
             "purl": "",
-            "version": "1.2.1"
+            "version": "1.2.2"
           },
           {
             "name": "redent",

@@ -24,7 +24,7 @@ Audiobook request and management platform with AI recommendations.
 ## Version Tags
 | Tag | Description | Best For |
 | :--- | :--- | :--- |
-| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users. Matches Linux Docker behavior. |
+| `latest` | **FreeBSD Port**. Built from latest FreeBSD packages. | Most users — recommended. |
 
 ## Prerequisites
 Before deploying, ensure your host environment is ready. See the [Quick Start Guide](https://daemonless.io/guides/quick-start) for host setup instructions.
