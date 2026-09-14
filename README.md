@@ -7,6 +7,7 @@ Source: dbuild templates
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/daemonless/readmeabook/build.yaml?style=flat-square&label=Build&color=green)](https://github.com/daemonless/readmeabook/actions)
 [![Last Commit](https://img.shields.io/github/last-commit/daemonless/readmeabook?style=flat-square&label=Last+Commit&color=blue)](https://github.com/daemonless/readmeabook/commits)
+[![OCI Pulls](https://img.shields.io/docker/pulls/daemonless/readmeabook?style=flat-square&label=OCI+Pulls&color=blue)](https://hub.docker.com/r/daemonless/readmeabook)
 [![sysvipc Required](https://img.shields.io/badge/sysvipc-required-orange?style=flat-square&logo=freebsd&logoColor=white)](https://daemonless.io/guides/ocijail-patch/)
 
 Audiobook request and management platform with AI recommendations.
@@ -84,9 +85,10 @@ services:
   readmeabook:
     name: readmeabook
     options:
-      - container: 'boot args:--pull'
+      - container: 'args:--pull'
       - expose: '3030:3030 proto:tcp'
       - template: !ENV '${PWD}/readmeabook.conf'
+      - template: !ENV '${PWD}/template.conf'
     oci:
       user: root
       environment:
@@ -124,14 +126,30 @@ volumes:
 
 ARG tag=latest
 
+OPTION container=boot
 OPTION overwrite=force
 OPTION from=ghcr.io/daemonless/readmeabook:${tag}
-SET allow.sysvipc=1
+```
+
+**template.conf**:
+
+```
+# template.conf
+
+exec.start: "/bin/sh /etc/rc"
+exec.stop: "/bin/sh /etc/rc.shutdown jail"
+mount.devfs
+persist
+allow.sysvipc
 ```
 
 Save the files above, then run `appjail-director up`.
 
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
 ### Podman CLI
 
@@ -157,12 +175,14 @@ Save as `run.sh`, then run `sh run.sh`.
 
 ### AppJail
 
+
 ```bash
 appjail oci run -Pd \
   -o overwrite=force \
   -o container="args:--pull" \
   -o virtualnet=":<random> default" \
   -o nat \
+  -o template=template.conf \
   -o expose="3030:3030 proto:tcp" \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -178,30 +198,53 @@ appjail oci run -Pd \
   ghcr.io/daemonless/readmeabook:latest readmeabook
 ```
 
-Save as `run.sh`, then run `sh run.sh`.
+**template.conf**:
+```
+# template.conf
 
-**Note**: Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the IPv4 address assigned by the virtual network.
+exec.start: "/bin/sh /etc/rc"
+exec.stop: "/bin/sh /etc/rc.shutdown jail"
+mount.devfs
+persist
+allow.sysvipc
+```
+
+Save the files above, then run `sh run.sh`.
+
+
+> [!WARNING]
+> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
+>
+> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
 ### Bastille
 
 > [!WARNING]
-> Bastille's OCI support is **experimental**. It requires `buildah`, shares the host network stack (`inherit`), and persists image-declared volumes under `--data-path`.
+> Bastille's OCI support is **experimental**. It requires `buildah` and shares the host network stack (`inherit`). Mount volumes with `--volume HOST JAIL`; without it, image-declared volumes are stored under `${bastille_volumesdir}/${jail}`.
 
 ```yaml
 services:
   readmeabook:
+    name: readmeabook
     image: "ghcr.io/daemonless/readmeabook:latest"
-    container_name: readmeabook
-    network_mode: host  # jail shares host networking
+    network:
+      - mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=UTC
       - LOG_LEVEL=info
       - PUBLIC_URL=
+    volumes:
+      - "/path/to/containers/readmeabook/config:/app/config"
+      - "/path/to/containers/readmeabook/cache:/app/cache"
+      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
+      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
+      - "/path/to/downloads:/downloads"
+      - "/path/to/media:/media"
 ```
 
-Save as `podman-compose.yml`, then run `bastille up`. Or via CLI:
+Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
 
 ```bash
 bastille create -O \
@@ -210,7 +253,12 @@ bastille create -O \
   --env TZ=UTC \
   --env LOG_LEVEL=info \
   --env PUBLIC_URL= \
-  --data-path /path/to/containers/readmeabook \
+  --volume /path/to/containers/readmeabook/config /app/config \
+  --volume /path/to/containers/readmeabook/cache /app/cache \
+  --volume /path/to/containers/readmeabook/data /var/lib/postgresql/data \
+  --volume /path/to/containers/readmeabook/redis /var/lib/redis \
+  --volume /path/to/downloads /downloads \
+  --volume /path/to/media /media \
   readmeabook ghcr.io/daemonless/readmeabook:latest inherit
 ```
 
