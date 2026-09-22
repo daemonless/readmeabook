@@ -1,11 +1,11 @@
 {
-  "generated": "2026-09-14T16:49:36Z",
+  "generated": "2026-09-22T08:05:24Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.2.3",
       "arch": "amd64",
-      "generated": "2026-09-14T16:46:44Z",
+      "generated": "2026-09-22T08:02:39Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -63,6 +63,13 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-devmatch",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD-3-Clause"
+            ],
+            "name": "FreeBSD-dhclient",
             "version": "15.1"
           },
           {
@@ -188,6 +195,13 @@
             "licenses": [
               "BSD2CLAUSE"
             ],
+            "name": "FreeBSD-resolvconf",
+            "version": "15.1"
+          },
+          {
+            "licenses": [
+              "BSD2CLAUSE"
+            ],
             "name": "FreeBSD-runtime",
             "version": "15.1p3"
           },
@@ -302,7 +316,7 @@
               "MPL20"
             ],
             "name": "ca_root_nss",
-            "version": "3.127"
+            "version": "3.129"
           },
           {
             "licenses": [
@@ -1167,7 +1181,7 @@
               "LGPL21"
             ],
             "name": "srt",
-            "version": "1.5.5"
+            "version": "1.5.6"
           },
           {
             "licenses": [
@@ -4793,7 +4807,7 @@
       "source": "upstream",
       "summary": {
         "dotnet": 0,
-        "freebsd": 172,
+        "freebsd": 174,
         "go": 0,
         "java": 0,
         "node": 703,
@@ -4801,7 +4815,7 @@
         "python": 3,
         "ruby": 0,
         "rust": 0,
-        "total": 878
+        "total": 880
       }
     }
   }
