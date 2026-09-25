@@ -119,7 +119,7 @@ LABEL org.opencontainers.image.title="ReadMeABook" \
       org.opencontainers.image.authors="daemonless" \
       io.daemonless.category="Media Management" \
       io.daemonless.port="3030" \
-      io.daemonless.volumes="/app/config,/app/cache,/var/lib/postgresql/data,/var/lib/redis,/downloads,/media" \
+      io.daemonless.volumes="/app/config,/app/cache,/var/lib/postgresql/data,/var/lib/redis,/downloads,/audiobooks" \
       io.daemonless.arch="${FREEBSD_ARCH}" \
       io.daemonless.upstream-url="${UPSTREAM_URL}" \
       io.daemonless.upstream-jq="${UPSTREAM_JQ}" \
@@ -137,14 +137,19 @@ RUN pkg update && \
 COPY --from=builder /tmp/app_version /tmp/app_version
 COPY --from=builder --chown=bsd:bsd /app /app
 
-# Create directories
+# Create directories. The library is /audiobooks; ReadMeABook's setup
+# pre-fills /media/audiobooks, so that path is a link into it -- a new
+# install keeps the default and its books land in the mounted folder.
+# Installs from before mount their library over /media, which hides the
+# link, and carry on as they were.
 RUN cp /tmp/app_version /app/version && \
-    mkdir -p /app/config /app/cache /downloads /media \
+    mkdir -p /app/config /app/cache /downloads /audiobooks /media \
              /var/lib/postgresql/data /var/lib/redis \
              /var/run/postgresql /etc/s6-env && \
+    ln -s /audiobooks /media/audiobooks && \
     chmod 755 /var/lib && \
     chown -R bsd:bsd /app /var/lib/postgresql /var/run/postgresql \
-                     /var/lib/redis /downloads /media
+                     /var/lib/redis /downloads /audiobooks /media
 
 # Copy service files
 COPY root/ /
@@ -158,4 +163,4 @@ ENV NODE_ENV=production
 EXPOSE 3030
 
 # --- Volumes (Injected by Generator) ---
-VOLUME /app/config /app/cache /var/lib/postgresql/data /var/lib/redis /downloads /media
+VOLUME /app/config /app/cache /var/lib/postgresql/data /var/lib/redis /downloads /audiobooks

@@ -48,7 +48,7 @@ services:
       - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
       - "/path/to/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
-      - "/path/to/media:/media"
+      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
     ports:
       - "3030:3030"
     annotations:
@@ -103,7 +103,7 @@ services:
       - readmeabook_data: /var/lib/postgresql/data
       - readmeabook_redis: /var/lib/redis
       - downloads: /downloads
-      - media: /media
+      - readmeabook_audiobooks: /audiobooks
 volumes:
   readmeabook_config:
     device: '/path/to/containers/readmeabook/config'
@@ -115,8 +115,8 @@ volumes:
     device: '/path/to/containers/readmeabook/redis'
   downloads:
     device: 'downloads'
-  media:
-    device: 'media'
+  readmeabook_audiobooks:
+    device: '/path/to/containers/readmeabook/audiobooks'
 ```
 
 **Makejail**:
@@ -167,7 +167,7 @@ podman run -d --name readmeabook \
   -v /path/to/containers/readmeabook/data:/var/lib/postgresql/data \
   -v /path/to/containers/readmeabook/redis:/var/lib/redis \
   -v /path/to/downloads:/downloads \
-  -v /path/to/media:/media \
+  -v /path/to/containers/readmeabook/audiobooks:/audiobooks \
   ghcr.io/daemonless/readmeabook:latest
 ```
 
@@ -194,7 +194,7 @@ appjail oci run -Pd \
   -o fstab="/path/to/containers/readmeabook/data /var/lib/postgresql/data <pseudofs>" \
   -o fstab="/path/to/containers/readmeabook/redis /var/lib/redis <pseudofs>" \
   -o fstab="/path/to/downloads /downloads <pseudofs>" \
-  -o fstab="/path/to/media /media <pseudofs>" \
+  -o fstab="/path/to/containers/readmeabook/audiobooks /audiobooks <pseudofs>" \
   ghcr.io/daemonless/readmeabook:latest readmeabook
 ```
 
@@ -241,7 +241,7 @@ services:
       - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
       - "/path/to/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
-      - "/path/to/media:/media"
+      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
 ```
 
 Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
@@ -258,7 +258,7 @@ bastille create -O \
   --volume /path/to/containers/readmeabook/data /var/lib/postgresql/data \
   --volume /path/to/containers/readmeabook/redis /var/lib/redis \
   --volume /path/to/downloads /downloads \
-  --volume /path/to/media /media \
+  --volume /path/to/containers/readmeabook/audiobooks /audiobooks \
   readmeabook ghcr.io/daemonless/readmeabook:latest inherit
 ```
 
@@ -285,7 +285,7 @@ bastille create -O \
       - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
       - "/path/to/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
-      - "/path/to/media:/media"
+      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
     annotation:
       org.freebsd.jail.allow.sysvipc: "true"
 ```
@@ -315,7 +315,7 @@ Access at: `http://localhost:3030`
 | `/var/lib/postgresql/data` | PostgreSQL database storage |
 | `/var/lib/redis` | Redis data persistence |
 | `/downloads` | Download client path |
-| `/media` | Audiobook library |
+| `/audiobooks` | Audiobook library |
 
 ### Ports
 

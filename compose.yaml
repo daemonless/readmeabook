@@ -36,7 +36,7 @@ x-daemonless:
       /app/config: "Application configuration and secrets"
       /app/cache: "Thumbnail and metadata cache"
       /downloads: "Download client path"
-      /media: "Audiobook library"
+      /audiobooks: "Audiobook library"
       /var/lib/postgresql/data: "PostgreSQL database storage"
       /var/lib/redis: "Redis data persistence"
     ports:
@@ -58,6 +58,6 @@ services:
       - /path/to/containers/readmeabook/postgres:/var/lib/postgresql/data
       - /path/to/containers/readmeabook/redis:/var/lib/redis
       - /path/to/downloads:/downloads
-      - /path/to/media:/media
+      - /path/to/media/audiobooks:/audiobooks
     ports:
       - "3030:3030"

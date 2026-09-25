@@ -19,7 +19,7 @@ SECRETS_FILE="/app/config/.secrets"
 echo "[readmeabook] Initializing with PUID=$PUID PGID=$PGID"
 
 # ── Create directories ───────────────────────────────────────────────
-mkdir -p /app/config /app/cache /downloads /media \
+mkdir -p /app/config /app/cache /downloads /audiobooks /media \
          /var/lib/postgresql/data /var/lib/redis \
          /var/run/postgresql /etc/s6-env
 
@@ -88,7 +88,8 @@ else
 fi
 
 # ── Set ownership ────────────────────────────────────────────────────
-chown -R bsd:bsd /app/config /app/cache /downloads /media \
+# /audiobooks is the library; /media is where installs from before mount it.
+chown -R bsd:bsd /app/config /app/cache /downloads /audiobooks /media \
                  /var/lib/postgresql /var/run/postgresql \
                  /var/lib/redis
 
