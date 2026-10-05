@@ -43,12 +43,12 @@ services:
       - LOG_LEVEL=info  # Logging level (default: info)
       - PUBLIC_URL=  # Public URL for OAuth callbacks (required for Plex/OIDC auth)
     volumes:
-      - "/path/to/containers/readmeabook/config:/app/config"
-      - "/path/to/containers/readmeabook/cache:/app/cache"
-      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
-      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
+      - "/containers/readmeabook/config:/app/config"
+      - "/containers/readmeabook/cache:/app/cache"
+      - "/containers/readmeabook/data:/var/lib/postgresql/data"
+      - "/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
-      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
+      - "/containers/readmeabook/audiobooks:/audiobooks"
     ports:
       - "3030:3030"
     annotations:
@@ -106,17 +106,17 @@ services:
       - readmeabook_audiobooks: /audiobooks
 volumes:
   readmeabook_config:
-    device: '/path/to/containers/readmeabook/config'
+    device: '/containers/readmeabook/config'
   readmeabook_cache:
-    device: '/path/to/containers/readmeabook/cache'
+    device: '/containers/readmeabook/cache'
   readmeabook_data:
-    device: '/path/to/containers/readmeabook/data'
+    device: '/containers/readmeabook/data'
   readmeabook_redis:
-    device: '/path/to/containers/readmeabook/redis'
+    device: '/containers/readmeabook/redis'
   downloads:
     device: 'downloads'
   readmeabook_audiobooks:
-    device: '/path/to/containers/readmeabook/audiobooks'
+    device: '/containers/readmeabook/audiobooks'
 ```
 
 **Makejail**:
@@ -151,72 +151,6 @@ Save the files above, then run `appjail-director up`.
 >
 > To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
 
-### Podman CLI
-
-```bash
-podman run -d --name readmeabook \
-  -p 3030:3030 \
-  --annotation 'org.freebsd.jail.allow.sysvipc=true' \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=UTC \
-  -e LOG_LEVEL=info \
-  -e PUBLIC_URL= \
-  -v /path/to/containers/readmeabook/config:/app/config \
-  -v /path/to/containers/readmeabook/cache:/app/cache \
-  -v /path/to/containers/readmeabook/data:/var/lib/postgresql/data \
-  -v /path/to/containers/readmeabook/redis:/var/lib/redis \
-  -v /path/to/downloads:/downloads \
-  -v /path/to/containers/readmeabook/audiobooks:/audiobooks \
-  ghcr.io/daemonless/readmeabook:latest
-```
-
-Save as `run.sh`, then run `sh run.sh`.
-
-### AppJail
-
-
-```bash
-appjail oci run -Pd \
-  -o overwrite=force \
-  -o container="args:--pull" \
-  -o virtualnet=":<random> default" \
-  -o nat \
-  -o template=template.conf \
-  -o expose="3030:3030 proto:tcp" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=UTC \
-  -e LOG_LEVEL=info \
-  -e PUBLIC_URL= \
-  -o fstab="/path/to/containers/readmeabook/config /app/config <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/cache /app/cache <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/data /var/lib/postgresql/data <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/redis /var/lib/redis <pseudofs>" \
-  -o fstab="/path/to/downloads /downloads <pseudofs>" \
-  -o fstab="/path/to/containers/readmeabook/audiobooks /audiobooks <pseudofs>" \
-  ghcr.io/daemonless/readmeabook:latest readmeabook
-```
-
-**template.conf**:
-```
-# template.conf
-
-exec.start: "/bin/sh /etc/rc"
-exec.stop: "/bin/sh /etc/rc.shutdown jail"
-mount.devfs
-persist
-allow.sysvipc
-```
-
-Save the files above, then run `sh run.sh`.
-
-
-> [!WARNING]
-> Exposing ports in AppJail means that your service can be reached from remote hosts. If that is not your intention, do not expose the ports and communicate with the service using the jail's IPv4 address or hostname assigned by the virtual network.
->
-> To avoid exposing ports, just remove the `expose` option in your `appjail-director.yml` or from your command-line arguments.
-
 ### Bastille
 
 > [!WARNING]
@@ -236,61 +170,15 @@ services:
       - LOG_LEVEL=info
       - PUBLIC_URL=
     volumes:
-      - "/path/to/containers/readmeabook/config:/app/config"
-      - "/path/to/containers/readmeabook/cache:/app/cache"
-      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
-      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
+      - "/containers/readmeabook/config:/app/config"
+      - "/containers/readmeabook/cache:/app/cache"
+      - "/containers/readmeabook/data:/var/lib/postgresql/data"
+      - "/containers/readmeabook/redis:/var/lib/redis"
       - "/path/to/downloads:/downloads"
-      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
+      - "/containers/readmeabook/audiobooks:/audiobooks"
 ```
 
-Save as `bastille-compose.yml`, then run `bastille up`. Or via CLI:
-
-```bash
-bastille create -O \
-  --env PUID=1000 \
-  --env PGID=1000 \
-  --env TZ=UTC \
-  --env LOG_LEVEL=info \
-  --env PUBLIC_URL= \
-  --volume /path/to/containers/readmeabook/config /app/config \
-  --volume /path/to/containers/readmeabook/cache /app/cache \
-  --volume /path/to/containers/readmeabook/data /var/lib/postgresql/data \
-  --volume /path/to/containers/readmeabook/redis /var/lib/redis \
-  --volume /path/to/downloads /downloads \
-  --volume /path/to/containers/readmeabook/audiobooks /audiobooks \
-  readmeabook ghcr.io/daemonless/readmeabook:latest inherit
-```
-
-### Ansible
-
-```yaml
-- name: Deploy readmeabook
-  containers.podman.podman_container:
-    name: readmeabook
-    image: "ghcr.io/daemonless/readmeabook:latest"
-    state: started
-    restart_policy: always
-    env:
-      PUID: "1000"
-      PGID: "1000"
-      TZ: "UTC"
-      LOG_LEVEL: "info"
-      PUBLIC_URL: ""
-    ports:
-      - "3030:3030"
-    volumes:
-      - "/path/to/containers/readmeabook/config:/app/config"
-      - "/path/to/containers/readmeabook/cache:/app/cache"
-      - "/path/to/containers/readmeabook/data:/var/lib/postgresql/data"
-      - "/path/to/containers/readmeabook/redis:/var/lib/redis"
-      - "/path/to/downloads:/downloads"
-      - "/path/to/containers/readmeabook/audiobooks:/audiobooks"
-    annotation:
-      org.freebsd.jail.allow.sysvipc: "true"
-```
-
-Save as `readmeabook-deploy.yaml`, then run `ansible-playbook readmeabook-deploy.yaml`.
+Save as `bastille-compose.yml`, then run `bastille up`.
 
 Access at: `http://localhost:3030`
 
