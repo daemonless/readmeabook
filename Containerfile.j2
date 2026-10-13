@@ -38,8 +38,11 @@ RUN --mount=type=secret,id=github_token \
     echo "${VERSION}" > /tmp/app_version && \
     rm -f /root/.netrc
 
-# Install dependencies (includes bcrypt native build via node-gyp)
-RUN PYTHON=/usr/local/bin/python3 npm ci
+# npm 12 blocks install scripts; bcrypt's addon and .prisma/client need them.
+RUN echo 'allow-scripts=bcrypt,@prisma/client,@prisma/engines,prisma,sharp,msgpackr-extract,esbuild,unrs-resolver' >> .npmrc && \
+    PYTHON=/usr/local/bin/python3 npm ci && \
+    test -f node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node && \
+    test -d node_modules/.prisma/client
 
 # Build Prisma query engine + schema engine for FreeBSD (no prebuilt binaries available)
 RUN . "$HOME/.cargo/env" && \
