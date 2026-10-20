@@ -41,7 +41,7 @@ services:
       - PGID=1000  # Group ID for the application process
       - TZ=UTC  # Timezone for the container
       - LOG_LEVEL=info  # Logging level (default: info)
-      - PUBLIC_URL=  # Public URL for OAuth callbacks (required for Plex/OIDC auth)
+      # - PUBLIC_URL=  # Public URL for OAuth callbacks (required for Plex/OIDC auth)
     volumes:
       - "/containers/readmeabook/config:/app/config"
       - "/containers/readmeabook/cache:/app/cache"
@@ -70,7 +70,6 @@ PUID=1000
 PGID=1000
 TZ=UTC
 LOG_LEVEL=info
-PUBLIC_URL=
 ```
 
 **appjail-director.yml**:
@@ -96,7 +95,6 @@ services:
         - PGID: !ENV '${PGID}'
         - TZ: !ENV '${TZ}'
         - LOG_LEVEL: !ENV '${LOG_LEVEL}'
-        - PUBLIC_URL: !ENV '${PUBLIC_URL}'
     volumes:
       - readmeabook_config: /app/config
       - readmeabook_cache: /app/cache
@@ -168,7 +166,6 @@ services:
       - PGID=1000
       - TZ=UTC
       - LOG_LEVEL=info
-      - PUBLIC_URL=
     volumes:
       - "/containers/readmeabook/config:/app/config"
       - "/containers/readmeabook/cache:/app/cache"
