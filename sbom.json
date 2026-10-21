@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-20T22:33:24Z",
+  "generated": "2026-10-21T07:16:43Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.9",
+      "app_version": "v1.2.10",
       "arch": "amd64",
-      "generated": "2026-10-20T22:30:44Z",
+      "generated": "2026-10-21T07:13:57Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -1275,11 +1275,6 @@
         "java": [],
         "node": [
           {
-            "name": "@acemir/cssom",
-            "purl": "",
-            "version": "0.9.31"
-          },
-          {
             "name": "@adobe/css-tools",
             "purl": "",
             "version": "4.4.4"
@@ -1292,12 +1287,17 @@
           {
             "name": "@asamuzakjp/css-color",
             "purl": "",
-            "version": "4.1.1"
+            "version": "5.1.11"
           },
           {
             "name": "@asamuzakjp/dom-selector",
             "purl": "",
-            "version": "6.7.6"
+            "version": "7.1.1"
+          },
+          {
+            "name": "@asamuzakjp/generational-cache",
+            "purl": "",
+            "version": "1.0.1"
           },
           {
             "name": "@asamuzakjp/nwsapi",
@@ -1395,6 +1395,11 @@
             "version": "1.0.2"
           },
           {
+            "name": "@bramus/specificity",
+            "purl": "",
+            "version": "2.4.3"
+          },
+          {
             "name": "@cspotcode/source-map-support",
             "purl": "",
             "version": "0.8.1"
@@ -1402,32 +1407,32 @@
           {
             "name": "@csstools/color-helpers",
             "purl": "",
-            "version": "5.1.0"
+            "version": "6.1.2"
           },
           {
             "name": "@csstools/css-calc",
             "purl": "",
-            "version": "2.1.4"
+            "version": "3.4.3"
           },
           {
             "name": "@csstools/css-color-parser",
             "purl": "",
-            "version": "3.1.0"
+            "version": "4.2.6"
           },
           {
             "name": "@csstools/css-parser-algorithms",
             "purl": "",
-            "version": "3.0.5"
+            "version": "4.0.2"
           },
           {
             "name": "@csstools/css-syntax-patches-for-csstree",
             "purl": "",
-            "version": "1.0.25"
+            "version": "1.1.15"
           },
           {
             "name": "@csstools/css-tokenizer",
             "purl": "",
-            "version": "3.0.4"
+            "version": "4.0.2"
           },
           {
             "name": "@edge-runtime/cookies",
@@ -1502,7 +1507,7 @@
           {
             "name": "@exodus/bytes",
             "purl": "",
-            "version": "1.8.0"
+            "version": "1.16.0"
           },
           {
             "name": "@heroicons/react",
@@ -1512,12 +1517,17 @@
           {
             "name": "@humanfs/core",
             "purl": "",
-            "version": "0.19.1"
+            "version": "0.19.2"
           },
           {
             "name": "@humanfs/node",
             "purl": "",
-            "version": "0.16.7"
+            "version": "0.16.8"
+          },
+          {
+            "name": "@humanfs/types",
+            "purl": "",
+            "version": "0.15.0"
           },
           {
             "name": "@humanwhocodes/module-importer",
@@ -1547,7 +1557,7 @@
           {
             "name": "@ioredis/commands",
             "purl": "",
-            "version": "1.4.0"
+            "version": "1.10.0"
           },
           {
             "name": "@isaacs/cliui",
@@ -1717,7 +1727,7 @@
           {
             "name": "@rollup/rollup-freebsd-x64",
             "purl": "",
-            "version": "4.55.1"
+            "version": "4.64.12"
           },
           {
             "name": "@rtsao/scc",
@@ -1732,7 +1742,7 @@
           {
             "name": "@standard-schema/spec",
             "purl": "",
-            "version": "1.0.0"
+            "version": "1.1.0"
           },
           {
             "name": "@swc/helpers",
@@ -1772,7 +1782,7 @@
           {
             "name": "@testing-library/jest-dom",
             "purl": "",
-            "version": "6.9.1"
+            "version": "7.0.1"
           },
           {
             "name": "@testing-library/react",
@@ -1847,7 +1857,7 @@
           {
             "name": "@types/estree",
             "purl": "",
-            "version": "1.0.8"
+            "version": "1.0.9"
           },
           {
             "name": "@types/http-cache-semantics",
@@ -1987,42 +1997,42 @@
           {
             "name": "@vitest/coverage-v8",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/expect",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/mocker",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/pretty-format",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/runner",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/snapshot",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/spy",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "@vitest/utils",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "MathJax-grunt-cleaner",
@@ -2162,7 +2172,7 @@
           {
             "name": "ast-v8-to-istanbul",
             "purl": "",
-            "version": "0.3.10"
+            "version": "1.0.7"
           },
           {
             "name": "async",
@@ -2242,7 +2252,7 @@
           {
             "name": "bidi-js",
             "purl": "",
-            "version": "1.0.3"
+            "version": "1.1.0"
           },
           {
             "name": "boolbase",
@@ -2327,7 +2337,7 @@
           {
             "name": "chai",
             "purl": "",
-            "version": "6.2.2"
+            "version": "6.3.0"
           },
           {
             "name": "chalk",
@@ -2377,7 +2387,7 @@
           {
             "name": "cluster-key-slot",
             "purl": "",
-            "version": "1.1.2"
+            "version": "1.1.1"
           },
           {
             "name": "color-convert",
@@ -2467,7 +2477,7 @@
           {
             "name": "css-tree",
             "purl": "",
-            "version": "3.1.0"
+            "version": "3.2.1"
           },
           {
             "name": "css-what",
@@ -2478,11 +2488,6 @@
             "name": "css.escape",
             "purl": "",
             "version": "1.5.1"
-          },
-          {
-            "name": "cssstyle",
-            "purl": "",
-            "version": "5.3.7"
           },
           {
             "name": "csstype",
@@ -2502,7 +2507,7 @@
           {
             "name": "data-urls",
             "purl": "",
-            "version": "6.0.0"
+            "version": "7.0.0"
           },
           {
             "name": "data-view-buffer",
@@ -2712,7 +2717,7 @@
           {
             "name": "es-module-lexer",
             "purl": "",
-            "version": "1.7.0"
+            "version": "2.3.2"
           },
           {
             "name": "es-object-atoms",
@@ -2937,7 +2942,7 @@
           {
             "name": "flatted",
             "purl": "",
-            "version": "3.3.3"
+            "version": "3.4.4"
           },
           {
             "name": "follow-redirects",
@@ -3135,11 +3140,6 @@
             "version": "4.2.0"
           },
           {
-            "name": "http-proxy-agent",
-            "purl": "",
-            "version": "7.0.2"
-          },
-          {
             "name": "http2-wrapper",
             "purl": "",
             "version": "1.0.3"
@@ -3192,7 +3192,7 @@
           {
             "name": "ioredis",
             "purl": "",
-            "version": "5.8.2"
+            "version": "5.11.1"
           },
           {
             "name": "is-array-buffer",
@@ -3392,17 +3392,17 @@
           {
             "name": "js-tokens",
             "purl": "",
-            "version": "4.0.0"
+            "version": "10.0.0"
           },
           {
             "name": "js-yaml",
             "purl": "",
-            "version": "4.1.1"
+            "version": "4.3.2"
           },
           {
             "name": "jsdom",
             "purl": "",
-            "version": "27.4.0"
+            "version": "29.1.1"
           },
           {
             "name": "jsesc",
@@ -3510,19 +3510,9 @@
             "version": "4.18.1"
           },
           {
-            "name": "lodash.defaults",
-            "purl": "",
-            "version": "4.2.0"
-          },
-          {
             "name": "lodash.includes",
             "purl": "",
             "version": "4.3.0"
-          },
-          {
-            "name": "lodash.isarguments",
-            "purl": "",
-            "version": "3.1.0"
           },
           {
             "name": "lodash.isboolean",
@@ -3592,7 +3582,7 @@
           {
             "name": "magicast",
             "purl": "",
-            "version": "0.5.1"
+            "version": "0.5.5"
           },
           {
             "name": "magnet-uri",
@@ -3617,7 +3607,7 @@
           {
             "name": "mdn-data",
             "purl": "",
-            "version": "2.12.2"
+            "version": "2.27.1"
           },
           {
             "name": "merge2",
@@ -4057,7 +4047,7 @@
           {
             "name": "readmeabook",
             "purl": "",
-            "version": "1.2.9"
+            "version": "1.2.10"
           },
           {
             "name": "redent",
@@ -4127,7 +4117,7 @@
           {
             "name": "rollup",
             "purl": "",
-            "version": "4.55.1"
+            "version": "4.64.12"
           },
           {
             "name": "run-parallel",
@@ -4267,7 +4257,7 @@
           {
             "name": "std-env",
             "purl": "",
-            "version": "3.10.0"
+            "version": "4.3.0"
           },
           {
             "name": "stop-iteration-iterator",
@@ -4412,17 +4402,17 @@
           {
             "name": "tinyrainbow",
             "purl": "",
-            "version": "3.0.3"
+            "version": "3.2.0"
           },
           {
             "name": "tldts",
             "purl": "",
-            "version": "7.0.19"
+            "version": "7.4.18"
           },
           {
             "name": "tldts-core",
             "purl": "",
-            "version": "7.0.19"
+            "version": "7.4.18"
           },
           {
             "name": "to-regex-range",
@@ -4432,7 +4422,7 @@
           {
             "name": "tough-cookie",
             "purl": "",
-            "version": "6.0.0"
+            "version": "6.0.2"
           },
           {
             "name": "tr46",
@@ -4557,7 +4547,7 @@
           {
             "name": "vite",
             "purl": "",
-            "version": "7.3.1"
+            "version": "7.3.7"
           },
           {
             "name": "vite-tsconfig-paths",
@@ -4567,7 +4557,7 @@
           {
             "name": "vitest",
             "purl": "",
-            "version": "4.0.17"
+            "version": "4.1.12"
           },
           {
             "name": "w3c-xmlserializer",
@@ -4597,7 +4587,7 @@
           {
             "name": "whatwg-url",
             "purl": "",
-            "version": "15.1.0"
+            "version": "16.0.1"
           },
           {
             "name": "which",
@@ -4643,11 +4633,6 @@
             "name": "wrappy",
             "purl": "",
             "version": "1.0.2"
-          },
-          {
-            "name": "ws",
-            "purl": "",
-            "version": "8.19.0"
           },
           {
             "name": "xml-name-validator",
@@ -4732,12 +4717,12 @@
         "freebsd": 175,
         "go": 0,
         "java": 0,
-        "node": 686,
+        "node": 683,
         "php": 0,
         "python": 3,
         "ruby": 0,
         "rust": 0,
-        "total": 864
+        "total": 861
       }
     }
   }
