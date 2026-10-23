@@ -7,7 +7,7 @@
 ARG BASE_VERSION=15.1
 ARG UPSTREAM_URL="https://api.github.com/repos/kikootwo/readmeabook/releases/latest"
 
-FROM ghcr.io/daemonless/base:${BASE_VERSION} AS builder
+FROM ghcr.io/daemonless/base-exec:${BASE_VERSION} AS builder
 
 ARG UPSTREAM_URL
 
@@ -101,7 +101,7 @@ RUN cd /app && \
     rm -rf node_modules/.cache 2>/dev/null || true
 
 # Production image
-FROM ghcr.io/daemonless/base:${BASE_VERSION}
+FROM ghcr.io/daemonless/base-rcd:${BASE_VERSION}
 
 ARG FREEBSD_ARCH=amd64
 ARG PACKAGES="node postgresql16-server postgresql16-client redis ffmpeg openssl"
@@ -148,7 +148,7 @@ COPY --from=builder --chown=bsd:bsd /app /app
 RUN cp /tmp/app_version /app/version && \
     mkdir -p /app/config /app/cache /downloads /audiobooks /media \
              /var/lib/postgresql/data /var/lib/redis \
-             /var/run/postgresql /etc/s6-env && \
+             /var/run/postgresql && \
     ln -s /audiobooks /media/audiobooks && \
     chmod 755 /var/lib && \
     chown -R bsd:bsd /app /var/lib/postgresql /var/run/postgresql \
@@ -156,7 +156,7 @@ RUN cp /tmp/app_version /app/version && \
 
 # Copy service files
 COPY root/ /
-RUN chmod +x /etc/services.d/*/run /etc/cont-init.d/* 2>/dev/null || true
+RUN chmod +x /daemonless/libexec/* /daemonless/init.d/*
 
 WORKDIR /app
 

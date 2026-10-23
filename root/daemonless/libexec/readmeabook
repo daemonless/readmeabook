@@ -16,7 +16,7 @@ done
 echo "Redis is ready"
 
 # Load environment
-. /etc/s6-env/readmeabook
+. /etc/readmeabook.env
 
 export HOME=/app/config
 export NODE_ENV=production
@@ -26,8 +26,11 @@ export HOSTNAME=0.0.0.0
 cd /app
 
 # Start server in background
-s6-setuidgid bsd /usr/local/bin/node server.js &
+dsu bsd /usr/local/bin/node server.js &
 SERVER_PID=$!
+# node runs in the background (for /api/init below): pass the stop on to it,
+# or rcd waits out stop_timeout_ms and kills it.
+trap 'kill -TERM $SERVER_PID; wait $SERVER_PID; exit 0' TERM
 
 # Wait for server to be ready, then call /api/init to start scheduler/jobs
 # (upstream image does this in app-start.sh)

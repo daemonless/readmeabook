@@ -4,7 +4,7 @@
 # - Initializes PostgreSQL if needed
 # - Generates/loads secrets
 # - Runs Prisma schema migrations
-# - Writes s6 environment
+# - Writes rcd environment
 
 set -e
 
@@ -21,7 +21,7 @@ echo "[readmeabook] Initializing with PUID=$PUID PGID=$PGID"
 # ── Create directories ───────────────────────────────────────────────
 mkdir -p /app/config /app/cache /downloads /audiobooks /media \
          /var/lib/postgresql/data /var/lib/redis \
-         /var/run/postgresql /etc/s6-env
+         /var/run/postgresql
 
 chmod 755 /var/lib
 
@@ -65,7 +65,7 @@ chmod 600 "$SECRETS_FILE"
 if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
     echo "[readmeabook] Initializing PostgreSQL database..."
     chown -R bsd:bsd /var/lib/postgresql /var/run/postgresql
-    s6-setuidgid bsd /usr/local/bin/initdb -D /var/lib/postgresql/data --encoding=UTF8 --locale=C
+    dsu bsd /usr/local/bin/initdb -D /var/lib/postgresql/data --encoding=UTF8 --locale=C
 
     # Configure pg_hba.conf for local trust auth
     cat > /var/lib/postgresql/data/pg_hba.conf <<PGHBA
@@ -75,13 +75,13 @@ host    all   all   ::1/128       trust
 PGHBA
 
     # Start temporary PostgreSQL to create user and database
-    s6-setuidgid bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start
+    dsu bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start
 
     echo "[readmeabook] Creating database user and database..."
-    s6-setuidgid bsd /usr/local/bin/psql -h 127.0.0.1 postgres -c "CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';"
-    s6-setuidgid bsd /usr/local/bin/psql -h 127.0.0.1 postgres -c "CREATE DATABASE $POSTGRES_DB OWNER $POSTGRES_USER;"
+    dsu bsd /usr/local/bin/psql -h 127.0.0.1 postgres -c "CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';"
+    dsu bsd /usr/local/bin/psql -h 127.0.0.1 postgres -c "CREATE DATABASE $POSTGRES_DB OWNER $POSTGRES_USER;"
 
-    s6-setuidgid bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop
+    dsu bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop
     echo "[readmeabook] PostgreSQL initialized"
 else
     echo "[readmeabook] PostgreSQL data directory exists, skipping init"
@@ -99,21 +99,21 @@ export DATABASE_URL
 
 echo "[readmeabook] Running Prisma schema push..."
 # Start PostgreSQL temporarily for migration
-s6-setuidgid bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start
+dsu bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w start
 
 cd /app
 env PRISMA_SCHEMA_ENGINE_BINARY=/app/schema-engine \
     PRISMA_QUERY_ENGINE_LIBRARY=/app/node_modules/.prisma/client/libquery_engine-freebsd15.so.node \
     PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 \
-    s6-setuidgid bsd /usr/local/bin/node /app/node_modules/prisma/build/index.js db push --skip-generate --accept-data-loss || \
+    dsu bsd /usr/local/bin/node /app/node_modules/prisma/build/index.js db push --skip-generate --accept-data-loss || \
     echo "[readmeabook] WARNING: prisma db push failed - schema may need manual migration"
 
-s6-setuidgid bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop
+dsu bsd /usr/local/bin/pg_ctl -D /var/lib/postgresql/data -w stop
 
-# ── Write s6 environment ────────────────────────────────────────────
+# ── Write rcd environment ────────────────────────────────────────────
 REDIS_URL="redis://127.0.0.1:6379"
 
-cat > /etc/s6-env/readmeabook <<EOF
+cat > /etc/readmeabook.env <<EOF
 export DATABASE_URL="$DATABASE_URL"
 export REDIS_URL="$REDIS_URL"
 export JWT_SECRET="$JWT_SECRET"
