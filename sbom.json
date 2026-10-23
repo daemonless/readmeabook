@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-21T07:16:43Z",
+  "generated": "2026-10-23T17:17:11Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
       "app_version": "v1.2.10",
       "arch": "amd64",
-      "generated": "2026-10-21T07:13:57Z",
+      "generated": "2026-10-23T17:14:36Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -188,13 +188,6 @@
             "licenses": [
               "BSD2CLAUSE"
             ],
-            "name": "FreeBSD-rc",
-            "version": "15.1"
-          },
-          {
-            "licenses": [
-              "BSD2CLAUSE"
-            ],
             "name": "FreeBSD-resolvconf",
             "version": "15.1"
           },
@@ -339,13 +332,6 @@
             ],
             "name": "dav1d",
             "version": "1.5.4"
-          },
-          {
-            "licenses": [
-              "ISCL"
-            ],
-            "name": "execline",
-            "version": "2.9.8.1"
           },
           {
             "licenses": [
@@ -545,7 +531,7 @@
               "MIT"
             ],
             "name": "libX11",
-            "version": "1.8.13_1,1"
+            "version": "1.8.14,1"
           },
           {
             "licenses": [
@@ -594,7 +580,7 @@
               "MIT"
             ],
             "name": "libXrender",
-            "version": "0.9.12"
+            "version": "0.9.13"
           },
           {
             "licenses": [
@@ -1134,13 +1120,6 @@
           },
           {
             "licenses": [
-              "ISCL"
-            ],
-            "name": "s6",
-            "version": "2.14.0.1"
-          },
-          {
-            "licenses": [
               "APACHE20"
             ],
             "name": "shaderc",
@@ -1159,7 +1138,7 @@
               "APACHE20"
             ],
             "name": "simdjson",
-            "version": "5.0.1"
+            "version": "5.0.5"
           },
           {
             "licenses": [
@@ -1168,13 +1147,6 @@
             ],
             "name": "simdutf",
             "version": "9.2.1"
-          },
-          {
-            "licenses": [
-              "ISCL"
-            ],
-            "name": "skalibs",
-            "version": "2.14.5.1"
           },
           {
             "licenses": [
@@ -4714,7 +4686,7 @@
       "source": "upstream",
       "summary": {
         "dotnet": 0,
-        "freebsd": 175,
+        "freebsd": 171,
         "go": 0,
         "java": 0,
         "node": 683,
@@ -4722,7 +4694,7 @@
         "python": 3,
         "ruby": 0,
         "rust": 0,
-        "total": 861
+        "total": 857
       }
     }
   }
