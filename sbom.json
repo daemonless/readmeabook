@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-24T09:17:37Z",
+  "generated": "2026-10-26T23:43:07Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.10",
+      "app_version": "v1.2.11",
       "arch": "amd64",
-      "generated": "2026-10-24T09:14:42Z",
+      "generated": "2026-10-26T23:40:35Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -3906,7 +3906,7 @@
             "version": "6.19.3"
           },
           {
-            "name": "prisma-client-6739ad80f9fdc7f8281a6510b1203963060d3dc2aa71e5efcd07d7a3396e6883",
+            "name": "prisma-client-adcce150f82094135ba8e2ef07be3eef118372e04d1f4495ae65737bba204f87",
             "purl": "",
             "version": "6.19.3"
           },
@@ -4003,7 +4003,7 @@
           {
             "name": "readmeabook",
             "purl": "",
-            "version": "1.2.10"
+            "version": "1.2.11"
           },
           {
             "name": "redent",
@@ -4638,7 +4638,7 @@
           {
             "name": "zod",
             "purl": "",
-            "version": "3.25.76"
+            "version": "4.6.7"
           },
           {
             "name": "zod-validation-error",
