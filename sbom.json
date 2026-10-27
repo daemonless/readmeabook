@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-26T23:43:07Z",
+  "generated": "2026-10-27T19:47:32Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.11",
+      "app_version": "v1.2.12",
       "arch": "amd64",
-      "generated": "2026-10-26T23:40:35Z",
+      "generated": "2026-10-27T19:45:10Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -1516,11 +1516,6 @@
             "version": "1.10.0"
           },
           {
-            "name": "@isaacs/cliui",
-            "purl": "",
-            "version": "8.0.2"
-          },
-          {
             "name": "@jridgewell/gen-mapping",
             "purl": "",
             "version": "0.3.13"
@@ -1639,11 +1634,6 @@
             "name": "@panva/asn1.js",
             "purl": "",
             "version": "1.0.0"
-          },
-          {
-            "name": "@pkgjs/parseargs",
-            "purl": "",
-            "version": "0.11.0"
           },
           {
             "name": "@prisma/client",
@@ -1778,7 +1768,7 @@
           {
             "name": "@types/archiver",
             "purl": "",
-            "version": "7.0.0"
+            "version": "8.0.0"
           },
           {
             "name": "@types/aria-query",
@@ -2053,12 +2043,7 @@
           {
             "name": "archiver",
             "purl": "",
-            "version": "7.0.1"
-          },
-          {
-            "name": "archiver-utils",
-            "purl": "",
-            "version": "5.0.2"
+            "version": "8.0.0"
           },
           {
             "name": "arg",
@@ -2363,7 +2348,7 @@
           {
             "name": "compress-commons",
             "purl": "",
-            "version": "6.0.2"
+            "version": "7.0.1"
           },
           {
             "name": "concat-map",
@@ -2403,7 +2388,7 @@
           {
             "name": "crc32-stream",
             "purl": "",
-            "version": "6.0.0"
+            "version": "7.0.1"
           },
           {
             "name": "create-require",
@@ -2601,11 +2586,6 @@
             "version": "1.0.1"
           },
           {
-            "name": "eastasianwidth",
-            "purl": "",
-            "version": "0.2.0"
-          },
-          {
             "name": "ecdsa-sig-formatter",
             "purl": "",
             "version": "1.0.11"
@@ -2623,7 +2603,7 @@
           {
             "name": "emoji-regex",
             "purl": "",
-            "version": "8.0.0"
+            "version": "9.2.2"
           },
           {
             "name": "empathic",
@@ -2911,11 +2891,6 @@
             "version": "0.3.5"
           },
           {
-            "name": "foreground-child",
-            "purl": "",
-            "version": "3.3.1"
-          },
-          {
             "name": "form-data",
             "purl": "",
             "version": "4.0.6"
@@ -2989,11 +2964,6 @@
             "name": "giget",
             "purl": "",
             "version": "2.0.0"
-          },
-          {
-            "name": "glob",
-            "purl": "",
-            "version": "10.5.0"
           },
           {
             "name": "glob-parent",
@@ -3206,11 +3176,6 @@
             "version": "1.1.1"
           },
           {
-            "name": "is-fullwidth-code-point",
-            "purl": "",
-            "version": "3.0.0"
-          },
-          {
             "name": "is-generator-function",
             "purl": "",
             "version": "1.1.2"
@@ -3263,7 +3228,7 @@
           {
             "name": "is-stream",
             "purl": "",
-            "version": "2.0.1"
+            "version": "4.0.1"
           },
           {
             "name": "is-string",
@@ -3329,11 +3294,6 @@
             "name": "iterator.prototype",
             "purl": "",
             "version": "1.1.5"
-          },
-          {
-            "name": "jackspeak",
-            "purl": "",
-            "version": "3.4.3"
           },
           {
             "name": "jiti",
@@ -3518,7 +3478,7 @@
           {
             "name": "lru-cache",
             "purl": "",
-            "version": "10.4.3"
+            "version": "11.5.3"
           },
           {
             "name": "luxon",
@@ -3604,11 +3564,6 @@
             "name": "minimist",
             "purl": "",
             "version": "1.2.8"
-          },
-          {
-            "name": "minipass",
-            "purl": "",
-            "version": "5.0.0"
           },
           {
             "name": "ms",
@@ -3801,11 +3756,6 @@
             "version": "5.0.0"
           },
           {
-            "name": "package-json-from-dist",
-            "purl": "",
-            "version": "1.0.1"
-          },
-          {
             "name": "parent-module",
             "purl": "",
             "version": "1.0.1"
@@ -3849,11 +3799,6 @@
             "name": "path-parse",
             "purl": "",
             "version": "1.0.7"
-          },
-          {
-            "name": "path-scurry",
-            "purl": "",
-            "version": "1.11.1"
           },
           {
             "name": "pathe",
@@ -3906,7 +3851,7 @@
             "version": "6.19.3"
           },
           {
-            "name": "prisma-client-adcce150f82094135ba8e2ef07be3eef118372e04d1f4495ae65737bba204f87",
+            "name": "prisma-client-7ed0ef7a05c7805c53bb1646ee9040571c91a98c065701bf3ca6f12f05855301",
             "purl": "",
             "version": "6.19.3"
           },
@@ -3993,7 +3938,7 @@
           {
             "name": "readdir-glob",
             "purl": "",
-            "version": "1.1.3"
+            "version": "3.0.0"
           },
           {
             "name": "readdirp",
@@ -4003,7 +3948,7 @@
           {
             "name": "readmeabook",
             "purl": "",
-            "version": "1.2.11"
+            "version": "1.2.12"
           },
           {
             "name": "redent",
@@ -4186,11 +4131,6 @@
             "version": "2.0.0"
           },
           {
-            "name": "signal-exit",
-            "purl": "",
-            "version": "4.1.0"
-          },
-          {
             "name": "source-map-js",
             "purl": "",
             "version": "1.2.2"
@@ -4231,11 +4171,6 @@
             "version": "4.0.4"
           },
           {
-            "name": "string-width",
-            "purl": "",
-            "version": "4.2.3"
-          },
-          {
             "name": "string.prototype.includes",
             "purl": "",
             "version": "2.0.1"
@@ -4269,11 +4204,6 @@
             "name": "string_decoder",
             "purl": "",
             "version": "1.1.1"
-          },
-          {
-            "name": "strip-ansi",
-            "purl": "",
-            "version": "6.0.1"
           },
           {
             "name": "strip-bom",
@@ -4581,11 +4511,6 @@
             "version": "1.2.5"
           },
           {
-            "name": "wrap-ansi",
-            "purl": "",
-            "version": "7.0.0"
-          },
-          {
             "name": "wrappy",
             "purl": "",
             "version": "1.0.2"
@@ -4633,7 +4558,7 @@
           {
             "name": "zip-stream",
             "purl": "",
-            "version": "6.0.1"
+            "version": "7.0.5"
           },
           {
             "name": "zod",
@@ -4673,12 +4598,12 @@
         "freebsd": 169,
         "go": 0,
         "java": 0,
-        "node": 683,
+        "node": 668,
         "php": 0,
         "python": 3,
         "ruby": 0,
         "rust": 0,
-        "total": 855
+        "total": 840
       }
     }
   }
