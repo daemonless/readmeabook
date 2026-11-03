@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-27T19:47:32Z",
+  "generated": "2026-11-03T09:22:13Z",
   "image": "readmeabook",
   "tags": {
     "latest": {
-      "app_version": "v1.2.12",
+      "app_version": "v1.2.13",
       "arch": "amd64",
-      "generated": "2026-10-27T19:45:10Z",
+      "generated": "2026-11-03T09:19:30Z",
       "packages": {
         "dotnet": [],
         "freebsd": [
@@ -196,7 +196,7 @@
               "BSD2CLAUSE"
             ],
             "name": "FreeBSD-runtime",
-            "version": "15.1p5"
+            "version": "15.1p6"
           },
           {
             "licenses": [
@@ -266,7 +266,7 @@
               "BSD2CLAUSE"
             ],
             "name": "aom",
-            "version": "3.15.1"
+            "version": "3.15.2"
           },
           {
             "licenses": [
@@ -295,7 +295,7 @@
               "MIT"
             ],
             "name": "brotli",
-            "version": "1.2.0,1"
+            "version": "1.2.1,1"
           },
           {
             "licenses": [
@@ -309,7 +309,7 @@
               "MPL20"
             ],
             "name": "ca_root_nss",
-            "version": "3.131"
+            "version": "3.132"
           },
           {
             "licenses": [
@@ -950,14 +950,14 @@
               "NA"
             ],
             "name": "node",
-            "version": "24.21.0_3"
+            "version": "24.22.1"
           },
           {
             "licenses": [
               "MIT"
             ],
             "name": "node24",
-            "version": "24.21.0_3"
+            "version": "24.22.1"
           },
           {
             "licenses": [
@@ -1108,7 +1108,7 @@
               "SSPLv1"
             ],
             "name": "redis",
-            "version": "8.10.2"
+            "version": "8.10.3"
           },
           {
             "licenses": [
@@ -1593,17 +1593,17 @@
           {
             "name": "@next/env",
             "purl": "",
-            "version": "16.4.2"
+            "version": "16.4.3"
           },
           {
             "name": "@next/eslint-plugin-next",
             "purl": "",
-            "version": "16.4.2"
+            "version": "16.4.3"
           },
           {
             "name": "@next/swc-wasm-nodejs",
             "purl": "",
-            "version": "16.4.2"
+            "version": "16.4.3"
           },
           {
             "name": "@nodable/entities",
@@ -2143,7 +2143,7 @@
           {
             "name": "axios",
             "purl": "",
-            "version": "1.20.0"
+            "version": "1.21.0"
           },
           {
             "name": "axobject-query",
@@ -2698,7 +2698,7 @@
           {
             "name": "eslint-config-next",
             "purl": "",
-            "version": "16.4.2"
+            "version": "16.4.3"
           },
           {
             "name": "eslint-import-resolver-node",
@@ -2883,7 +2883,7 @@
           {
             "name": "follow-redirects",
             "purl": "",
-            "version": "1.16.1"
+            "version": "1.16.2"
           },
           {
             "name": "for-each",
@@ -3603,7 +3603,7 @@
           {
             "name": "next",
             "purl": "",
-            "version": "16.4.2"
+            "version": "16.4.3"
           },
           {
             "name": "node-addon-api",
@@ -3851,7 +3851,7 @@
             "version": "6.19.3"
           },
           {
-            "name": "prisma-client-7ed0ef7a05c7805c53bb1646ee9040571c91a98c065701bf3ca6f12f05855301",
+            "name": "prisma-client-db5f8727ae7c2789d706aabf63a5bb41c7f7f932d9d0cf3d209e4bcdb05c77c7",
             "purl": "",
             "version": "6.19.3"
           },
@@ -3948,7 +3948,7 @@
           {
             "name": "readmeabook",
             "purl": "",
-            "version": "1.2.12"
+            "version": "1.2.13"
           },
           {
             "name": "redent",
