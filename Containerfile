@@ -11,19 +11,16 @@ FROM ghcr.io/daemonless/base-exec:${BASE_VERSION} AS builder
 
 ARG UPSTREAM_URL
 
-# Build dependencies (C compiler + python for bcrypt, Rust libs for Prisma engines)
+# Build dependencies (C compiler + python for bcrypt, prisma-engines for Prisma)
 RUN pkg update && pkg install -y \
     jq \
     node npm \
+    prisma-engines \
     git-lite gmake pkgconf \
     FreeBSD-clang FreeBSD-clang-dev FreeBSD-clibs-dev FreeBSD-openssl-dev \
     FreeBSD-toolchain \
-    FreeBSD-libexecinfo-dev FreeBSD-utilities-dev FreeBSD-runtime-dev \
-    python3 \
-    && pkg clean -ay
-
-# Install Rust (needed to build Prisma query engine for FreeBSD)
-RUN fetch -qo - https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+    python3 && \
+    pkg clean -ay && rm -rf /var/cache/pkg/* /var/db/pkg/repos/*
 
 # Set up compiler symlinks for node-gyp
 RUN ln -sf /usr/bin/clang++ /usr/bin/c++ && \
@@ -50,18 +47,11 @@ RUN echo 'allow-scripts=bcrypt,@prisma/client,@prisma/engines,prisma,sharp,msgpa
     test -f node_modules/bcrypt/build/Release/bcrypt_lib.node && \
     test -d node_modules/.prisma/client
 
-# Build Prisma query engine + schema engine for FreeBSD (no prebuilt binaries available)
-RUN . "$HOME/.cargo/env" && \
-    PRISMA_ENGINE_HASH=$(node -e "console.log(require('./node_modules/@prisma/engines-version').enginesVersion)") && \
-    echo "Building Prisma engines at commit $PRISMA_ENGINE_HASH" && \
-    git clone https://github.com/prisma/prisma-engines.git /tmp/prisma-engines && \
-    cd /tmp/prisma-engines && \
-    git checkout "$PRISMA_ENGINE_HASH" && \
-    cargo build --release -p query-engine-node-api && \
-    cargo build --release -p schema-engine-cli && \
-    cp target/release/libquery_engine.so /build/node_modules/.prisma/client/libquery_engine-freebsd15.so.node && \
-    cp target/release/schema-engine /tmp/schema-engine && \
-    rm -rf /tmp/prisma-engines
+# Copy prebuilt FreeBSD Prisma query engine + schema engine from prisma-engines package
+RUN cp /usr/local/libexec/prisma-engines/libquery_engine.so \
+       /build/node_modules/.prisma/client/libquery_engine-freebsd15.so.node && \
+    cp /usr/local/libexec/prisma-engines/schema-engine /tmp/schema-engine && \
+    chmod 755 /tmp/schema-engine
 
 # Generate Prisma client
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
